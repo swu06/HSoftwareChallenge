@@ -14,16 +14,44 @@ public class JsonCleanerTest {
 	@Test
 	public void testBasicConstructor() {
 		try{ 
-			JsonParser parser = Json.createParser(new StringReader("{}"));
-			JsonGenerator generator = Json.createGenerator(new StringWriter());
-			JsonCleaner thisCleaner = new JsonCleaner(parser, generator);
+			JsonCleaner thisCleaner = new JsonCleaner(new StringReader("{}"));
 			
-			assertNotNull(thisCleaner);
+			assertNotNull("A valid object should be created", thisCleaner);
 			
 		} catch(Exception e) {
 			fail("No exceptions should occur during construction");
 		}
 		
+	}
+	
+	@Test
+	public void testDirectCopyEmpty() {
+		try{ 
+			StringWriter sw = new StringWriter();
+			JsonCleaner thisCleaner = new JsonCleaner(new StringReader("{}"));
+			thisCleaner.write(sw);
+			System.out.println("Generator String:" + sw.toString());
+			assertEquals("Cleaner should pass back basic copied document", 
+					"{}", sw.toString());
+		} catch(Exception e) {
+			e.printStackTrace();
+			fail("No exceptions should occur during construction");
+		}		
+	}
+	
+	@Test
+	public void testDirectCopyOneKeyPair() {
+		try{ 
+			StringWriter sw = new StringWriter();
+			JsonCleaner thisCleaner = new JsonCleaner(new StringReader("{\"sarah\":\"hello\"}"));
+			thisCleaner.write(sw);
+			System.out.println("Generator String:" + sw.toString());
+			assertEquals("Cleaner should pass back basic copied document", 
+					"{\"sarah\":\"hello\"}", sw.toString());
+		} catch(Exception e) {
+			e.printStackTrace();
+			fail("No exceptions should occur during construction");
+		}		
 	}
 
 }

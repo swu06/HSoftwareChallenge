@@ -2,8 +2,13 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.Reader;
+import java.io.Writer;
 
 import javax.json.Json;
+import javax.json.JsonReader;
+import javax.json.JsonStructure;
+import javax.json.JsonWriter;
 import javax.json.stream.JsonGenerator;
 import javax.json.stream.JsonParser;
 import javax.json.stream.JsonParser.Event;
@@ -15,22 +20,20 @@ import javax.json.stream.JsonParser.Event;
  * default access.
  */
 public class JsonCleaner {
-	JsonParser parser;
-	JsonGenerator generator;
+	JsonStructure jsonst;
 	
-	public JsonCleaner(JsonParser parser, JsonGenerator generator) {
-		this.parser = parser;
-		this.generator = generator;
+	public JsonCleaner(Reader reader) {
+		JsonReader jReader = Json.createReader(reader);
+		jsonst = jReader.read();
 	}
 	
-	public void cleanDocumentAndOutput() {
-		while(parser.hasNext()) {
-			Event nextEvent = parser.next();
-			if(nextEvent.equals(Event.KEY_NAME) || nextEvent.equals(Event.VALUE_STRING) || nextEvent.equals(Event.VALUE_NUMBER)) {
-				System.out.println(parser.getString());
-			}
-			
-		}
+	public void cleanDuplicates() {
+		
+	}
+	
+	public void write(Writer writer) {
+		JsonWriter jsonWriter = Json.createWriter(writer);
+		jsonWriter.write(jsonst);
 	}
 
 	public static void main(String[] args) {
@@ -42,12 +45,12 @@ public class JsonCleaner {
 		System.out.println("Attempting to read file at " + inputLocation);
 		
 		try(FileReader reader = new FileReader(inputLocation);
-				JsonParser parser = Json.createParser(reader);
-				FileWriter writer = new FileWriter(outputLocation);
-				JsonGenerator generator = Json.createGenerator(writer)) {
+				FileWriter writer = new FileWriter(outputLocation);) {
 			
-			JsonCleaner cleaner = new JsonCleaner(parser, generator);
-			cleaner.cleanDocumentAndOutput();
+			JsonCleaner cleaner = new JsonCleaner(reader);
+			cleaner.cleanDuplicates();
+			cleaner.write(writer);
+			
 		} catch (FileNotFoundException e) {
 			System.out.println("The file could not be found.  Please check "
 					+ "the location and run again."
