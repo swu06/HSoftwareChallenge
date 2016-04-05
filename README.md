@@ -1,38 +1,14 @@
 # HSoftwareChallenge
 
 ========
-Challenge Details:
-Instructions: Solve the challenge below using the programming language of your choice.  Use this opportunity to demonstrate your ideas about what makes good software.  Please provide your solution in a public source code repository of your choice.
-Purpose: Clean nested repeated fields from a JSON document.
-Details: A field is repeated if the name of the field exists at a higher level of nesting.  A field is not repeated if the field name occurs in a sibling object tree.
-In this example, the "wholesaler" field should be removed from all the objects in the "contacts" array, since it occurs in the outermost object.
+Dev Setup Instructions (Eclipse/Git Based):
+1. From your eclipse workspace, go to File --> Import.
+2. Expand the "Git" folder and select "Project from Git", click next.
+3. Enter the project URL (In this case: https://github.com/swu06/HSoftwareChallenge) and click next.  Note: You may also need to enter your GitHub credentials.
+4. Ensure that master is checked, click next.
+5. Choose a directory to store the GitRepository, click next.
+6. Select "Import existing Eclipse projects", click next.
+7. Ensure "HSoftwareChallenge" is checked, click next.
+8. Click Finish.
 
-Before:
-{
-  "wholesaler":"US Foods",
-  "delivered":"2015-06-19T05:15:00-0500",
-  "contacts": [
-    {
-      "wholesaler":"US Foods",
-      "name":"John Lederer"
-    },
-    {
-      "wholesaler":"Sysco",
-      "name":"Bill Delaney"
-    }
-  ]
-}
-
-After:
-{
-  "wholesaler":"US Foods",
-  "delivered":"2015-06-19T05:15:00-0500",
-  "contacts": [
-    {
-      "name":"John Lederer"
-    },
-    {
-      "name":"Bill Delaney"
-    }
-  ]
-}
+At this point, you can run the code using Eclipse's run options, or you can build a jar to send out into a production environment.
